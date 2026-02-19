@@ -1,0 +1,4 @@
+0 tshirt
+1 flasche
+2 schuhe
+3 buch
