@@ -13,6 +13,12 @@ def load_model():
 
 model = load_model()
 
+def load_labels():
+    with open("labels.txt", "r") as f:
+        return [line.strip() for line in f.readlines()]
+
+class_names = load_labels()
+
 # =========================================================
 # =================== KI FUNKTION =========================
 # =========================================================
