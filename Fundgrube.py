@@ -3,7 +3,15 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 from PIL import Image
+
 IMG_SIZE = 224
+
+
+@st.cache_resource
+def load_model():
+    return tf.keras.models.load_model("keras_model.h5")
+
+model = load_model()
 
 # =========================================================
 # =================== KI FUNKTION =========================
