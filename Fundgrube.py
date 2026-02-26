@@ -2,8 +2,7 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-from PIL 
-import Image
+from PIL import Image
 IMG_SIZE = 224
 
 # =========================================================
