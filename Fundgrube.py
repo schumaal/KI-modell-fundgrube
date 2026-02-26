@@ -19,14 +19,6 @@ def load_labels():
 
 class_names = load_labels()
 
-from supabase import create_client
-import streamlit as st
-
-SUPABASE_URL = "DEINE_PROJECT_URL"
-SUPABASE_KEY = "DEIN_ANON_PUBLIC_KEY"
-
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
 # =========================================================
 # =================== KI FUNKTION =========================
 # =========================================================
