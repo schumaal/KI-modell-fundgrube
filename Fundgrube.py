@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-IMG_SIZE = 224
 
 
 @st.cache_resource
