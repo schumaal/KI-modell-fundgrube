@@ -13,7 +13,7 @@ IMG_SIZE = 224
 # =========================================================
 
 SUPABASE_URL = "https://ajybcyjgvvmcnwujsvnz.supabase.co"
-SUPABASE_KEY = "sb_publishable_uu46hNj9YnnoDsZV9-I2Rw_IUf-SLbe"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqeWJjeWpndnZtY253dWpzdm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMDQ3NjksImV4cCI6MjA4NzY4MDc2OX0.oKNBirTY-E1aO1L-xmsXiG_IpHwuZjyv1pg3rFwuhjE"
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
