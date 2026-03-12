@@ -4,4 +4,4 @@ numpy
 pandas
 pillow
 h5py
-pip install supabase
+
