@@ -12,7 +12,7 @@ IMG_SIZE = 224
 # =================== SUPABASE VERBINDUNG =================
 # =========================================================
 
-SUPABASE_URL = "ajybcyjgvvmcnwujsvnz"
+SUPABASE_URL = "https://ajybcyjgvvmcnwujsvnz.supabase.co"
 SUPABASE_KEY = "sb_publishable_uu46hNj9YnnoDsZV9-I2Rw_IUf-SLbe"
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
