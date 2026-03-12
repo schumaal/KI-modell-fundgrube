@@ -4,7 +4,7 @@ numpy
 pandas
 pillow
 h5py
-from supabase import create_client
+
 
 streamlit
 tensorflow
