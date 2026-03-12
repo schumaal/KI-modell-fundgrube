@@ -4,4 +4,11 @@ numpy
 pandas
 pillow
 h5py
+from supabase import create_client
 
+streamlit
+tensorflow
+numpy
+pandas
+pillow
+supabase==2.3.4
