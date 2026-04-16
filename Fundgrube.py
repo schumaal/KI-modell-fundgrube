@@ -5,6 +5,7 @@ import pandas as pd
 from PIL import Image
 
 
+IMG_SIZE = 224
 
 st.cache_resource
 def load_model():
