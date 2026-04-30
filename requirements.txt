@@ -12,3 +12,11 @@ numpy
 pandas
 pillow
 supabase==2.3.4
+
+streamlit
+tensorflow
+torch
+transformers
+pillow
+numpy
+pandas
