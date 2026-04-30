@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 from PIL import Image
-pip install transformers torch pillow
+
 
 
 IMG_SIZE = 224
