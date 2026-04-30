@@ -4,3 +4,6 @@ opencv-python-headless==4.8.1.78
 pillow
 numpy
 pandas
+
+ultralytics==8.0.196
+opencv-python-headless==4.8.1.78
