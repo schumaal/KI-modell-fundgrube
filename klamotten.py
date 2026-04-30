@@ -2,45 +2,33 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image
-from transformers import AutoImageProcessor, AutoModelForObjectDetection
-import torch
+from ultralytics import YOLO
 
 # =========================================================
-# =================== MODEL ===============================
+# =================== MODEL (YOLOv8) ======================
 # =========================================================
 
 @st.cache_resource
 def load_model():
-    processor = AutoImageProcessor.from_pretrained("hustvl/yolos-tiny")
-    model = AutoModelForObjectDetection.from_pretrained("hustvl/yolos-tiny")
-    return processor, model
+    return YOLO("yolov8n.pt")  # kleines, schnelles Modell
 
-processor, model = load_model()
+model = load_model()
 
 # =========================================================
 # =================== KI FUNKTION =========================
 # =========================================================
 
 def predict_image(image):
-    inputs = processor(images=image, return_tensors="pt")
-
-    with torch.no_grad():
-        outputs = model(**inputs)
-
-    results = processor.post_process_object_detection(
-        outputs,
-        target_sizes=torch.tensor([image.size[::-1]])
-    )[0]
+    results = model(image)
 
     detections = []
 
-    for score, label, box in zip(
-        results["scores"], results["labels"], results["boxes"]
-    ):
-        detections.append({
-            "label": model.config.id2label[label.item()],
-            "confidence": float(score),
-        })
+    for r in results:
+        for box in r.boxes:
+            detections.append({
+                "label": model.names[int(box.cls)],
+                "confidence": float(box.conf)
+            })
 
     return detections
 
@@ -56,13 +44,23 @@ data = pd.DataFrame([
     {"Name": "Grüne Jacke", "Kategorie": "Sonstiges", "Farbe": "grün"},
 ])
 
+# Mapping YOLO → deine Kategorien
+label_mapping = {
+    "bottle": "Flasche",
+    "book": "Buch",
+    "shoe": "Schuh",
+    "backpack": "Sonstiges",
+    "handbag": "Sonstiges",
+    "person": "Sonstiges",
+}
+
 # =========================================================
-# =================== UI ========================
+# =================== STREAMLIT UI ========================
 # =========================================================
 
-st.title("🔎 Digitales Fundbüro")
+st.title("🔎 Digitales Fundbüro mit YOLOv8")
 
-uploaded_file = st.file_uploader("Bild auswählen", type=["jpg", "png", "jpeg"])
+uploaded_file = st.file_uploader("Bild hochladen", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
@@ -72,5 +70,64 @@ if uploaded_file is not None:
 
     st.subheader("Erkannte Objekte:")
 
-    for det in detections:
-        st.write(f"{det['label']} ({det['confidence']*100:.2f}%)")
+    if not detections:
+        st.warning("Kein Objekt erkannt")
+    else:
+        for det in detections:
+            st.write(f"{det['label']} ({det['confidence']*100:.2f}%)")
+
+        # =====================================================
+        # AUTO FUND-BÜRO FILTER
+        # =====================================================
+
+        top_label = detections[0]["label"]
+
+        if top_label in label_mapping:
+            category = label_mapping[top_label]
+
+            st.success(f"🔎 Automatisch erkannt: {category}")
+
+            filtered_data = data[data["Kategorie"] == category]
+
+            st.subheader("📦 Passende Fundstücke:")
+            st.dataframe(filtered_data, use_container_width=True)
+
+# =========================================================
+# =================== MANUELLER FILTER ====================
+# =========================================================
+
+st.divider()
+
+st.subheader("🔍 Manuelle Suche")
+
+search = st.text_input("Suche nach Gegenstand")
+
+category_filter = st.selectbox(
+    "Kategorie wählen",
+    ["Alle", "T-Shirt", "Flasche", "Buch", "Schuh", "Sonstiges"]
+)
+
+color_filter = st.selectbox(
+    "Farbe wählen",
+    ["Alle", "schwarz", "weiß", "rot", "blau", "grün"]
+)
+
+filtered_data = data.copy()
+
+if search:
+    filtered_data = filtered_data[
+        filtered_data["Name"].str.contains(search, case=False)
+    ]
+
+if category_filter != "Alle":
+    filtered_data = filtered_data[
+        filtered_data["Kategorie"] == category_filter
+    ]
+
+if color_filter != "Alle":
+    filtered_data = filtered_data[
+        filtered_data["Farbe"] == color_filter
+    ]
+
+st.subheader("📦 Gefundene Gegenstände")
+st.dataframe(filtered_data, use_container_width=True)
