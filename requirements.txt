@@ -1,7 +1,5 @@
 streamlit
+ultralytics
+pillow
 numpy
 pandas
-pillow
-torch
-torchvision
-transformers
