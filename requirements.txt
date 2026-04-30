@@ -20,3 +20,12 @@ transformers
 pillow
 numpy
 pandas
+
+streamlit
+tensorflow
+torch
+torchvision
+transformers
+pillow
+numpy
+pandas
