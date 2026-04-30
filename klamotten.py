@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image
-from ultralytics import YOLO
 
 # Load a model
 model = YOLO("yolov8n.pt")
