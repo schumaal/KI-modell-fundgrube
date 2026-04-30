@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 from PIL import Image
+pip install transformers torch pillow
 
 
 IMG_SIZE = 224
@@ -12,6 +13,17 @@ def load_model():
     return tf.keras.models.load_model("keras_model.h5")
 
 model = load_model()
+
+from transformers import AutoImageProcessor, AutoModelForObjectDetection
+import torch
+
+@st.cache_resource
+def load_model():
+    processor = AutoImageProcessor.from_pretrained("hustvl/yolos-tiny")
+    model = AutoModelForObjectDetection.from_pretrained("hustvl/yolos-tiny")
+    return processor, model
+
+processor, model = load_model()
 
 def load_labels():
     with open("labels.txt", "r") as f:
