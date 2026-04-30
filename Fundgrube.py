@@ -46,6 +46,27 @@ def predict_image(image):
 
     return class_names[index], confidence
 
+def predict_image(image):
+    inputs = processor(images=image, return_tensors="pt")
+    
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    results = processor.post_process_object_detection(
+        outputs,
+        target_sizes=torch.tensor([image.size[::-1]])
+    )[0]
+
+    detections = []
+    
+    for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
+        detections.append({
+            "label": model.config.id2label[label.item()],
+            "confidence": float(score),
+        })
+
+    return detections
+
 
 # =========================================================
 # =================== DEMO DATENBANK ======================
